@@ -30,19 +30,40 @@ HTML = """
 <head>
     <title>Task_A Text Analysis App</title>
     <style>
-        body { font-family: Arial; margin: 40px; background: #f4f4f4; }
-        .box { background: white; padding: 25px; border-radius: 10px; }
-        h1 { color: #333; }
-        pre {
-    background: #eee;
-    padding: 15px;
-    border-radius: 8px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-}
-        button { padding: 10px 20px; margin-top: 10px; }
-    </style>
+    body { font-family: Arial; margin: 40px; background: #f4f4f4; }
+    .box { background: white; padding: 25px; border-radius: 10px; }
+    h1 { color: #333; }
+
+    .file-result {
+        margin-bottom: 30px;
+    }
+
+    .result-box {
+        background: #f0f4ff;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        border-left: 5px solid #3b73ff;
+    }
+
+    .result-box h4 {
+        margin-top: 0;
+        font-size: 18px;
+        color: #1d3f91;
+    }
+
+    pre {
+        background: white;
+        padding: 12px;
+        border-radius: 8px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        font-size: 14px;
+    }
+
+    button { padding: 10px 20px; margin-top: 10px; }
+</style>
 </head>
 <body>
 <div class="box">
@@ -61,13 +82,35 @@ HTML = """
         <button type="submit">Analyse</button>
     </form>
 
-    {% if results %}
-        <h2>Results</h2>
-        {% for filename, result in results.items() %}
+   {% if results %}
+    <h2>Results</h2>
+    {% for filename, result in results.items() %}
+        <div class="file-result">
             <h3>{{ filename }}</h3>
-            <pre>{{ result }}</pre>
-        {% endfor %}
-    {% endif %}
+
+            {% if result.get("Top 20 Word Frequency") %}
+                <div class="result-box">
+                    <h4>Top 20 Word Frequency</h4>
+                    <pre>{{ result["Top 20 Word Frequency"] }}</pre>
+                </div>
+            {% endif %}
+
+            {% if result.get("Top 10 Sentence Start Words") %}
+                <div class="result-box">
+                    <h4>Top 10 Sentence Start Words</h4>
+                    <pre>{{ result["Top 10 Sentence Start Words"] }}</pre>
+                </div>
+            {% endif %}
+
+            {% if result.get("Sentence Length Distribution") %}
+                <div class="result-box">
+                    <h4>Sentence Length Distribution</h4>
+                    <pre>{{ result["Sentence Length Distribution"] }}</pre>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endif %}
 </div>
 </body>
 </html>
